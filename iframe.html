@@ -1,0 +1,94 @@
+<div style="width: 20%; height: 100%; float: left;">
+    <iframe src="/list" width="100%" height="100%"></iframe>
+</div>
+<div style="width: 55%; height: 100%; float: left;">
+    <iframe src="/pdf/{{.FileName}}" width="100%" height="100%"></iframe>
+</div>
+<div
+    style="width: 25%; height: 100%; float: left; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <textarea id="prompt-input" style="width: 80%; margin-top: 10px; flex-grow: 1;"></textarea>
+    <button onmousedown="startRecording()" onmouseup="stopRecording()" ontouchstart="startRecording()"
+        ontouchend="stopRecording()">Voice</button>
+    <button type="button" onclick="sendPrompt()" style="margin-top: 10px;">Send</button>
+</div>
+
+
+<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+
+
+<script>
+    function sendPrompt() {
+        var input = document.getElementById("prompt-input");
+        var prompt = input.value;
+
+        // Disable inputs while processing
+        input.disabled = true;
+        document.querySelector("button").disabled = true;
+
+        // Send the prompt to the server using AJAX or fetch API
+        fetch(`/pdf/{{.FileName}}/change`, {
+            method: 'POST',
+            body: JSON.stringify({ prompt: prompt })
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Prompt sent successfully');
+                    // Reload the PDF iframe
+                    var pdfIframe = document.querySelector('iframe[src^="/pdf/{{.FileName}}"]');
+                    pdfIframe.src = "/pdf/{{.FileName}}";
+
+                    // Clear the prompt input box
+                    input.value = '';
+                } else {
+                    console.error('Error sending prompt:', response.status);
+                }
+                // Re-enable inputs
+                input.disabled = false;
+                document.querySelector("button").disabled = false;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Re-enable inputs in case of an error
+                input.disabled = false;
+                document.querySelector("button").disabled = false;
+            });
+
+
+    }
+    let audioContext;
+    let recorder;
+
+    function startRecording() {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(function (stream) {
+                const input = audioContext.createMediaStreamSource(stream);
+                recorder = new Recorder(input, { bitRate: 64 });
+                recorder.record();
+            });
+    }
+
+    function stopRecording() {
+        recorder.stop();
+        recorder.exportWAV(function (blob) {
+            const formData = new FormData();
+            formData.append("voicePrompt", blob, "voice_prompt.mp3");
+
+            // Make a POST request to the server
+            fetch("/speech-to-text", {
+                method: "POST",
+                body: formData
+            }).then(function (response) {
+                response.text().then(function (text) {
+                    var promptTextArea = document.getElementById("prompt-input");
+                    promptTextArea.value += "\n" + text;
+                    console.log("Voice memo uploaded successfully!");
+                }).catch(function (error) {
+                    console.error("Error converting response to text:", error);
+                });
+            }).catch(function (error) {
+                console.error("Error uploading voice memo:", error);
+            });
+        });
+    }
+</script>

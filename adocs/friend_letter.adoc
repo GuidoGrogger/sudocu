@@ -1,0 +1,39 @@
+= Letter to a Friend
+
+[horizontal]
+____
+Your Name
+Your Address
+City, State, ZIP
+____
+
+[date]
+June 29, 2023
+
+[horizontal]
+____
+Friend's Name
+Friend's Address
+City, State, ZIP
+____
+
+Dear XXX,
+
+I hope this letter finds you well. It has been a while since we last spoke, and I wanted to take a moment to catch up with you.
+
+Firstly, I wanted to share some exciting news with you. I recently started a new job, and I'm really enjoying it. The work is challenging, but rewarding, and I'm learning a lot every day. How about you? How are things going on your end? I'd love to hear about any updates or adventures you've had.
+
+Last month, I went on a short vacation to the beach. It was so refreshing to soak up the sun and relax by the ocean. I even tried surfing for the first time! I must admit, I was a bit wobbly at first, but it turned out to be a lot of fun. Do you have any travel plans coming up? I'm always up for hearing about your travel escapades.
+
+On a personal note, I've taken up a new hobby—painting. It's been a fantastic way to unwind and express my creativity. I've attached a photo of one of my recent paintings for you to see. Let me know what you think!
+
+Anyway, I don't want to make this letter too long. I just wanted to reach out and let you know that I miss our conversations and hope we can catch up soon. Feel free to drop me a line anytime or let me know if you're in town. I would love to meet up and catch up in person.
+
+Take care and stay in touch!
+
+Warm regards,
+
+Your Name
+
+
+

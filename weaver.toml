@@ -1,0 +1,2 @@
+[single]
+listeners.listener = {address = "localhost:8080"}

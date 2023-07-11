@@ -1,0 +1,47 @@
+= Rechnung
+:author: Your Company
+:email: contact@yourcompany.com
+:date: 29. Juni 2023
+:invoice_number: INV-001
+:vat_number: DE123456789
+
+[horizontal]
+[width="70%"]
+[cols="3"]
+|===
+|{author}
+|{email}
+|{date}
+
+|{invoice_number}
+|===
+
+== Rechnungsdetails
+
+[options="header"]
+|===
+|Position |Beschreibung |Betrag
+
+|1 |Produkt A |100,00 EUR
+|2 |Produkt B |50,00 EUR
+|3 |Produkt C |75,00 EUR
+
+|===
+.Gesamtsumme: 225,00 EUR
+
+== Zahlungsinformationen
+
+Bitte überweisen Sie den Gesamtbetrag innerhalb von 30 Tagen auf das folgende Bankkonto:
+
+[options="header"]
+|===
+|Bankname |Ihre Bank
+|Kontonummer |1234567890
+|IBAN |DE12 3456 7890 1234 5678 90
+|BIC |ABCDDEFFXXX
+
+|===
+
+== Steuerinformationen
+
+Umsatzsteuernummer: {vat_number}
