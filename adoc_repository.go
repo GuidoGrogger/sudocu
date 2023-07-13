@@ -4,12 +4,18 @@ import (
 	"context"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 	"time"
 
 	"github.com/ServiceWeaver/weaver"
+)
+
+const (
+	workDirName  = "work"
+	adocsDirName = "adocs"
 )
 
 type ADocRepository interface {
@@ -23,7 +29,7 @@ type aDocRepository struct {
 }
 
 func (a *aDocRepository) GetFiles(_ context.Context) ([]string, error) {
-	files, err := ioutil.ReadDir("adocs/")
+	files, err := ioutil.ReadDir(adocsDirName + "/")
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +51,11 @@ type FileVariant struct {
 }
 
 func (a *aDocRepository) GetVariantionsForFile(_ context.Context, fileName string) ([]FileVariant, error) {
-	files, err := ioutil.ReadDir("work/")
+	if err := a.ensureWorkDirExists(); err != nil {
+		return nil, err
+	}
+
+	files, err := ioutil.ReadDir(workDirName + "/")
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +67,6 @@ func (a *aDocRepository) GetVariantionsForFile(_ context.Context, fileName strin
 			if strings.HasPrefix(fileNameWithTimestamp, fileName) && strings.HasSuffix(fileNameWithTimestamp, ".adoc") {
 				variation := strings.TrimSuffix(strings.TrimPrefix(fileNameWithTimestamp, fileName), ".adoc")
 
-				// Extract the date from the filename suffix
 				timestamp := strings.TrimPrefix(variation, "_")
 				t, err := time.Parse("20060102_150405", timestamp)
 				if err != nil {
@@ -65,7 +74,7 @@ func (a *aDocRepository) GetVariantionsForFile(_ context.Context, fileName strin
 				}
 
 				fileVariant := FileVariant{
-					FileName: "work/" + fileNameWithTimestamp,
+					FileName: workDirName + "/" + fileNameWithTimestamp,
 					Date:     t,
 				}
 				variants = append(variants, fileVariant)
@@ -77,14 +86,13 @@ func (a *aDocRepository) GetVariantionsForFile(_ context.Context, fileName strin
 }
 
 func (a *aDocRepository) ReadFile(_ context.Context, fileName string) ([]byte, error) {
-	filePath := "adocs/" + fileName + ".adoc"
+	filePath := adocsDirName + "/" + fileName + ".adoc"
 
 	variants, err := a.GetVariantionsForFile(context.TODO(), fileName)
 	if err != nil {
 		return nil, err
 	}
 	if len(variants) > 0 {
-		// Sort the variations by date in descending order
 		sort.Slice(variants, func(i, j int) bool {
 			return variants[i].Date.After(variants[j].Date)
 		})
@@ -102,15 +110,29 @@ func (a *aDocRepository) ReadFile(_ context.Context, fileName string) ([]byte, e
 }
 
 func (a *aDocRepository) SaveVariantForFile(_ context.Context, fileName string, data []byte) error {
+	if err := a.ensureWorkDirExists(); err != nil {
+		return err
+	}
+
 	timestamp := time.Now().Format("20060102_150405")
 	variantFileName := fmt.Sprintf("%s_%s.adoc", fileName, timestamp)
 
-	filePath := filepath.Join("work", variantFileName)
+	filePath := filepath.Join(workDirName, variantFileName)
 
 	err := ioutil.WriteFile(filePath, data, 0644)
 	if err != nil {
 		return err
 	}
 
+	return nil
+}
+
+func (a *aDocRepository) ensureWorkDirExists() error {
+	if _, err := os.Stat(workDirName); os.IsNotExist(err) {
+		err = os.Mkdir(workDirName, 0755)
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }
