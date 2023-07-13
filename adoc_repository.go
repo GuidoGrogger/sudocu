@@ -28,12 +28,16 @@ type aDocRepository struct {
 	weaver.Implements[ADocRepository]
 }
 
-func (a *aDocRepository) GetFiles(_ context.Context) ([]string, error) {
+func (a *aDocRepository) GetFiles(ctx context.Context) ([]string, error) {
 	files, err := ioutil.ReadDir(adocsDirName + "/")
 	if err != nil {
 		return nil, err
 	}
 
+	return a.filterAdocFiles(files), nil
+}
+
+func (a *aDocRepository) filterAdocFiles(files []os.FileInfo) []string {
 	var fileNames []string
 	for _, file := range files {
 		if !file.IsDir() && strings.HasSuffix(file.Name(), ".adoc") {
@@ -41,8 +45,7 @@ func (a *aDocRepository) GetFiles(_ context.Context) ([]string, error) {
 			fileNames = append(fileNames, fileName)
 		}
 	}
-
-	return fileNames, nil
+	return fileNames
 }
 
 type FileVariant struct {
@@ -50,7 +53,7 @@ type FileVariant struct {
 	Date     time.Time
 }
 
-func (a *aDocRepository) GetVariantionsForFile(_ context.Context, fileName string) ([]FileVariant, error) {
+func (a *aDocRepository) GetVariantionsForFile(ctx context.Context, fileName string) ([]FileVariant, error) {
 	if err := a.ensureWorkDirExists(); err != nil {
 		return nil, err
 	}
@@ -60,6 +63,10 @@ func (a *aDocRepository) GetVariantionsForFile(_ context.Context, fileName strin
 		return nil, err
 	}
 
+	return a.filterFileVariants(files, fileName), nil
+}
+
+func (a *aDocRepository) filterFileVariants(files []os.FileInfo, fileName string) []FileVariant {
 	var variants []FileVariant
 	for _, file := range files {
 		if !file.IsDir() {
@@ -70,7 +77,7 @@ func (a *aDocRepository) GetVariantionsForFile(_ context.Context, fileName strin
 				timestamp := strings.TrimPrefix(variation, "_")
 				t, err := time.Parse("20060102_150405", timestamp)
 				if err != nil {
-					return nil, err
+					continue // skip the variant if timestamp is not valid
 				}
 
 				fileVariant := FileVariant{
@@ -81,17 +88,17 @@ func (a *aDocRepository) GetVariantionsForFile(_ context.Context, fileName strin
 			}
 		}
 	}
-
-	return variants, nil
+	return variants
 }
 
-func (a *aDocRepository) ReadFile(_ context.Context, fileName string) ([]byte, error) {
+func (a *aDocRepository) ReadFile(ctx context.Context, fileName string) ([]byte, error) {
 	filePath := adocsDirName + "/" + fileName + ".adoc"
 
-	variants, err := a.GetVariantionsForFile(context.TODO(), fileName)
+	variants, err := a.GetVariantionsForFile(ctx, fileName)
 	if err != nil {
 		return nil, err
 	}
+
 	if len(variants) > 0 {
 		sort.Slice(variants, func(i, j int) bool {
 			return variants[i].Date.After(variants[j].Date)
@@ -101,15 +108,10 @@ func (a *aDocRepository) ReadFile(_ context.Context, fileName string) ([]byte, e
 		filePath = newestVariant.FileName
 	}
 
-	content, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	return content, nil
+	return ioutil.ReadFile(filePath)
 }
 
-func (a *aDocRepository) SaveVariantForFile(_ context.Context, fileName string, data []byte) error {
+func (a *aDocRepository) SaveVariantForFile(ctx context.Context, fileName string, data []byte) error {
 	if err := a.ensureWorkDirExists(); err != nil {
 		return err
 	}
@@ -119,12 +121,7 @@ func (a *aDocRepository) SaveVariantForFile(_ context.Context, fileName string, 
 
 	filePath := filepath.Join(workDirName, variantFileName)
 
-	err := ioutil.WriteFile(filePath, data, 0644)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return ioutil.WriteFile(filePath, data, 0644)
 }
 
 func (a *aDocRepository) ensureWorkDirExists() error {
