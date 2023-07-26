@@ -10,6 +10,46 @@ This project, Sudocu, is a prototype that aims to explore the combination of GPT
 - The server processes the received text and updates the AsciiDoc file accordingly.
 - The AsciiDoc file is transformed into a PDF and presented to the user.
 
+# Installation
+
+Before you start using this project, you need to install certain dependencies. One such dependency is `asciidoctor-pdf`. Here are the steps to install it:
+
+## Installing asciidoctor-pdf
+
+`asciidoctor-pdf` is used to transform the AsciiDoc file into a PDF.
+
+Please follow these steps to install it:
+
+1. Make sure you have Ruby installed on your system. If not, you can download and install it from [here](https://www.ruby-lang.org/en/downloads/). Asciidoctor requires Ruby version 2.3 or higher.
+
+2. Install the Asciidoctor gem. This can be done by running the following command:
+
+```shell
+gem install asciidoctor
+```
+
+3. Now, install the `asciidoctor-pdf` gem by executing this command:
+
+```shell
+gem install asciidoctor-pdf --pre
+```
+
+This command will install the latest version of `asciidoctor-pdf`. 
+
+4. Verify your installation by checking the version. Run the following command:
+
+```shell
+asciidoctor-pdf --version
+```
+
+You should see the version of your `asciidoctor-pdf` installation.
+
+If you encounter any issues during the installation, refer to the official [Asciidoctor PDF project site](https://github.com/asciidoctor/asciidoctor-pdf).
+
+After installing `asciidoctor-pdf`, you can continue with the usage instructions mentioned above in the `Usage` section.
+
+Remember, to generate a PDF from an AsciiDoc file, this project requires the `asciidoctor-pdf` gem. If it's not installed correctly, the project might not work as expected.
+
 ## Usage
 
 1. Set your OpenAI API key by executing the command: `export OPENAI_API_KEY=<KEY>`
