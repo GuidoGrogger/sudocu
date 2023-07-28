@@ -5,6 +5,19 @@ go 1.20
 require github.com/ServiceWeaver/weaver v0.16.1
 
 require (
+	github.com/alecthomas/chroma/v2 v2.3.0 // indirect
+	github.com/bytesparadise/libasciidoc v0.8.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/dlclark/regexp2 v1.7.0 // indirect
+	github.com/go-task/slim-sprig v0.0.0-20210107165309-348f09dbbbc0 // indirect
+	github.com/mna/pigeon v1.1.0 // indirect
+	github.com/onsi/ginkgo/v2 v2.1.3 // indirect
+	github.com/pkg/errors v0.9.1 // indirect
+	github.com/sirupsen/logrus v1.7.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
+)
+
+require (
 	github.com/BurntSushi/toml v1.2.0 // indirect
 	github.com/DataDog/hyperloglog v0.0.0-20220214164406-974598347557 // indirect
 	github.com/antlr/antlr4/runtime/Go/antlr v0.0.0-20220418222510-f25a4f6275ed // indirect
@@ -17,6 +30,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/gorilla/mux v1.8.0
 	github.com/hashicorp/golang-lru/v2 v2.0.1 // indirect
+	github.com/jung-kurt/gofpdf v1.16.2
 	github.com/kballard/go-shellquote v0.0.0-20180428030007-95032a82bc51 // indirect
 	github.com/lightstep/varopt v1.3.0 // indirect
 	github.com/mattn/go-isatty v0.0.16 // indirect
