@@ -19,5 +19,4 @@ go.work
 
 /work
 /adocs/private*
-/weaver_gen.go
 /sudocu

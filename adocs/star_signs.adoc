@@ -1,0 +1,29 @@
+== Sternzeichen und ihre Eigenschaften ==
+[options="header"]
+|===
+| Sternzeichen | Besondere Eigenschaften
+
+| Wassermann | Unabhängig und einfallsreich
+
+| Fische | Empfindlich und intuitiv
+
+| Widder | Mutig und entschlossen
+
+| Stier | Stabil und geduldig
+
+| Zwillinge | Kommunikativ und neugierig
+
+| Krebs | Fürsorglich und emotional
+
+| Löwe | Selbstbewusst und großzügig
+
+| Jungfrau | Analytisch und fleißig
+
+| Waage | Diplomatisch und harmoniebedürftig
+
+| Skorpion | Leidenschaftlich und zielstrebig
+
+| Schütze | Abenteuerlustig und optimistisch
+
+| Steinbock | Zielstrebig und verantwortungsbewusst
+|===

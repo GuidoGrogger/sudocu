@@ -12,7 +12,7 @@ This project, Sudocu, is a prototype that aims to explore the combination of GPT
 
 # Installation
 
-Before you start using this project, you need to install certain dependencies. One such dependency is `asciidoctor-pdf`. Here are the steps to install it:
+Before you start using this project, you need to install `asciidoctor-pdf`. Here are the steps to install it:
 
 ## Installing asciidoctor-pdf
 
@@ -62,6 +62,12 @@ Remember, to generate a PDF from an AsciiDoc file, this project requires the `as
 8. The modified PDF is displayed to the user.
 
 Please note that this prototype relies on the combination of GPT, Whisper, and document generation, and may have limitations or areas for improvement. It is designed to showcase the integration of these technologies and provide an interactive experience for users to experiment with changing document content through speech commands.
+
+## Development
+
+For development you need the latest serviceweaver version. See https://serviceweaver.dev/ for installation guide.
+
+Run with the following command `weaver generate . && SERVICEWEAVER_CONFIG=weaver.toml go run .`
 
 ## Disclaimer
 
