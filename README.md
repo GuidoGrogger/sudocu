@@ -53,7 +53,7 @@ Remember, to generate a PDF from an AsciiDoc file, this project requires the `as
 ## Usage
 
 1. Set your OpenAI API key by executing the command: `export OPENAI_API_KEY=<KEY>`
-2. Run the following command: `weaver generate . && SERVICEWEAVER_CONFIG=weaver.toml go run .`
+2. Run the following command: `SERVICEWEAVER_CONFIG=weaver.toml go run .`
 3. Open your web browser and navigate to http://localhost:8080/list.
 4. Choose a document from the list (you can create your own documents in the /adoc folder).
 5. Click and hold the "Voice" button, then speak the desired change to be made.
@@ -65,9 +65,9 @@ Please note that this prototype relies on the combination of GPT, Whisper, and d
 
 ## Development
 
-For development you need the latest serviceweaver version. See https://serviceweaver.dev/ for installation guide.
+For development you need the latest serviceweaver version. See https://serviceweaver.dev/ for installation guide. In codesandbox just run `go install github.com/ServiceWeaver/weaver/cmd/weaver@latest` for that.
 
-Run with the following command `weaver generate . && SERVICEWEAVER_CONFIG=weaver.toml go run .`
+After changing the code, run `weaver generate . && SERVICEWEAVER_CONFIG=weaver.toml go run .`
 
 ## Disclaimer
 
