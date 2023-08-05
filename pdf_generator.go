@@ -19,7 +19,7 @@ type pdfGenerator struct {
 
 func (g *pdfGenerator) GeneratePDF(_ context.Context, content []byte) ([]byte, error) {
 	// Generate PDF using AsciidoctorJ and a shell command
-	cmd := exec.Command("asciidoctor-pdf", "-")
+	cmd := exec.Command("asciidoctor-pdf", "-", "--theme", "default-sans")
 	cmd.Stdin = bytes.NewReader(content)
 	var pdfContent bytes.Buffer
 	cmd.Stdout = &pdfContent
