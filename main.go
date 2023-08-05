@@ -33,6 +33,10 @@ func serve(ctx context.Context, a *app) error {
 
 	router := mux.NewRouter()
 
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/list", http.StatusMovedPermanently)
+	})
+
 	router.HandleFunc("/pdf/{filename}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		fileName := vars["filename"]
