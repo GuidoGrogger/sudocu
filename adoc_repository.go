@@ -21,6 +21,7 @@ const (
 type ADocRepository interface {
 	GetFiles(context.Context) ([]string, error)
 	ReadFile(context.Context, string) ([]byte, error)
+	ReadExampleJSON(ctx context.Context, fileName string) ([]byte, error)
 	SaveVariantForFile(context.Context, string, []byte) error
 }
 
@@ -111,6 +112,11 @@ func (a *aDocRepository) ReadFile(ctx context.Context, fileName string) ([]byte,
 	return ioutil.ReadFile(filePath)
 }
 
+func (a *aDocRepository) ReadExampleJSON(ctx context.Context, fileName string) ([]byte, error) {
+	filePath := "example-json/" + fileName + ".json"
+
+	return ioutil.ReadFile(filePath)
+}
 func (a *aDocRepository) SaveVariantForFile(ctx context.Context, fileName string, data []byte) error {
 	if err := a.ensureWorkDirExists(); err != nil {
 		return err

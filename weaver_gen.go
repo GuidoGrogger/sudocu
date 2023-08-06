@@ -39,10 +39,10 @@ func init() {
 		Iface: reflect.TypeOf((*ADocRepository)(nil)).Elem(),
 		Impl:  reflect.TypeOf(aDocRepository{}),
 		LocalStubFn: func(impl any, caller string, tracer trace.Tracer) any {
-			return aDocRepository_local_stub{impl: impl.(ADocRepository), tracer: tracer, getFilesMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "GetFiles", Remote: false}), readFileMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "ReadFile", Remote: false}), saveVariantForFileMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "SaveVariantForFile", Remote: false})}
+			return aDocRepository_local_stub{impl: impl.(ADocRepository), tracer: tracer, getFilesMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "GetFiles", Remote: false}), readExampleJSONMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "ReadExampleJSON", Remote: false}), readFileMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "ReadFile", Remote: false}), saveVariantForFileMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "SaveVariantForFile", Remote: false})}
 		},
 		ClientStubFn: func(stub codegen.Stub, caller string) any {
-			return aDocRepository_client_stub{stub: stub, getFilesMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "GetFiles", Remote: true}), readFileMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "ReadFile", Remote: true}), saveVariantForFileMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "SaveVariantForFile", Remote: true})}
+			return aDocRepository_client_stub{stub: stub, getFilesMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "GetFiles", Remote: true}), readExampleJSONMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "ReadExampleJSON", Remote: true}), readFileMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "ReadFile", Remote: true}), saveVariantForFileMetrics: codegen.MethodMetricsFor(codegen.MethodLabels{Caller: caller, Component: "sudocu/ADocRepository", Method: "SaveVariantForFile", Remote: true})}
 		},
 		ServerStubFn: func(impl any, addLoad func(uint64, float64)) codegen.Server {
 			return aDocRepository_server_stub{impl: impl.(ADocRepository), addLoad: addLoad}
@@ -130,6 +130,7 @@ type aDocRepository_local_stub struct {
 	impl                      ADocRepository
 	tracer                    trace.Tracer
 	getFilesMetrics           *codegen.MethodMetrics
+	readExampleJSONMetrics    *codegen.MethodMetrics
 	readFileMetrics           *codegen.MethodMetrics
 	saveVariantForFileMetrics *codegen.MethodMetrics
 }
@@ -155,6 +156,26 @@ func (s aDocRepository_local_stub) GetFiles(ctx context.Context) (r0 []string, e
 	}
 
 	return s.impl.GetFiles(ctx)
+}
+
+func (s aDocRepository_local_stub) ReadExampleJSON(ctx context.Context, a0 string) (r0 []byte, err error) {
+	// Update metrics.
+	begin := s.readExampleJSONMetrics.Begin()
+	defer func() { s.readExampleJSONMetrics.End(begin, err != nil, 0, 0) }()
+	span := trace.SpanFromContext(ctx)
+	if span.SpanContext().IsValid() {
+		// Create a child span for this method.
+		ctx, span = s.tracer.Start(ctx, "main.ADocRepository.ReadExampleJSON", trace.WithSpanKind(trace.SpanKindInternal))
+		defer func() {
+			if err != nil {
+				span.RecordError(err)
+				span.SetStatus(codes.Error, err.Error())
+			}
+			span.End()
+		}()
+	}
+
+	return s.impl.ReadExampleJSON(ctx, a0)
 }
 
 func (s aDocRepository_local_stub) ReadFile(ctx context.Context, a0 string) (r0 []byte, err error) {
@@ -243,7 +264,7 @@ type pDFGenerator_local_stub struct {
 // Check that pDFGenerator_local_stub implements the PDFGenerator interface.
 var _ PDFGenerator = (*pDFGenerator_local_stub)(nil)
 
-func (s pDFGenerator_local_stub) GeneratePDF(ctx context.Context, a0 []byte) (r0 []byte, err error) {
+func (s pDFGenerator_local_stub) GeneratePDF(ctx context.Context, a0 []byte, a1 []byte) (r0 []byte, err error) {
 	// Update metrics.
 	begin := s.generatePDFMetrics.Begin()
 	defer func() { s.generatePDFMetrics.End(begin, err != nil, 0, 0) }()
@@ -260,7 +281,7 @@ func (s pDFGenerator_local_stub) GeneratePDF(ctx context.Context, a0 []byte) (r0
 		}()
 	}
 
-	return s.impl.GeneratePDF(ctx, a0)
+	return s.impl.GeneratePDF(ctx, a0, a1)
 }
 
 type speechRepository_local_stub struct {
@@ -297,6 +318,7 @@ func (s speechRepository_local_stub) SpeechToText(ctx context.Context, a0 []byte
 type aDocRepository_client_stub struct {
 	stub                      codegen.Stub
 	getFilesMetrics           *codegen.MethodMetrics
+	readExampleJSONMetrics    *codegen.MethodMetrics
 	readFileMetrics           *codegen.MethodMetrics
 	saveVariantForFileMetrics *codegen.MethodMetrics
 }
@@ -351,6 +373,62 @@ func (s aDocRepository_client_stub) GetFiles(ctx context.Context) (r0 []string, 
 	return
 }
 
+func (s aDocRepository_client_stub) ReadExampleJSON(ctx context.Context, a0 string) (r0 []byte, err error) {
+	// Update metrics.
+	var requestBytes, replyBytes int
+	begin := s.readExampleJSONMetrics.Begin()
+	defer func() { s.readExampleJSONMetrics.End(begin, err != nil, requestBytes, replyBytes) }()
+
+	span := trace.SpanFromContext(ctx)
+	if span.SpanContext().IsValid() {
+		// Create a child span for this method.
+		ctx, span = s.stub.Tracer().Start(ctx, "main.ADocRepository.ReadExampleJSON", trace.WithSpanKind(trace.SpanKindClient))
+	}
+
+	defer func() {
+		// Catch and return any panics detected during encoding/decoding/rpc.
+		if err == nil {
+			err = codegen.CatchPanics(recover())
+			if err != nil {
+				err = errors.Join(weaver.RemoteCallError, err)
+			}
+		}
+
+		if err != nil {
+			span.RecordError(err)
+			span.SetStatus(codes.Error, err.Error())
+		}
+		span.End()
+
+	}()
+
+	// Preallocate a buffer of the right size.
+	size := 0
+	size += (4 + len(a0))
+	enc := codegen.NewEncoder()
+	enc.Reset(size)
+
+	// Encode arguments.
+	enc.String(a0)
+	var shardKey uint64
+
+	// Call the remote method.
+	requestBytes = len(enc.Data())
+	var results []byte
+	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
+	replyBytes = len(results)
+	if err != nil {
+		err = errors.Join(weaver.RemoteCallError, err)
+		return
+	}
+
+	// Decode the results.
+	dec := codegen.NewDecoder(results)
+	r0 = serviceweaver_dec_slice_byte_87461245(dec)
+	err = dec.Error()
+	return
+}
+
 func (s aDocRepository_client_stub) ReadFile(ctx context.Context, a0 string) (r0 []byte, err error) {
 	// Update metrics.
 	var requestBytes, replyBytes int
@@ -393,7 +471,7 @@ func (s aDocRepository_client_stub) ReadFile(ctx context.Context, a0 string) (r0
 	// Call the remote method.
 	requestBytes = len(enc.Data())
 	var results []byte
-	results, err = s.stub.Run(ctx, 1, enc.Data(), shardKey)
+	results, err = s.stub.Run(ctx, 2, enc.Data(), shardKey)
 	replyBytes = len(results)
 	if err != nil {
 		err = errors.Join(weaver.RemoteCallError, err)
@@ -451,7 +529,7 @@ func (s aDocRepository_client_stub) SaveVariantForFile(ctx context.Context, a0 s
 	// Call the remote method.
 	requestBytes = len(enc.Data())
 	var results []byte
-	results, err = s.stub.Run(ctx, 2, enc.Data(), shardKey)
+	results, err = s.stub.Run(ctx, 3, enc.Data(), shardKey)
 	replyBytes = len(results)
 	if err != nil {
 		err = errors.Join(weaver.RemoteCallError, err)
@@ -545,7 +623,7 @@ type pDFGenerator_client_stub struct {
 // Check that pDFGenerator_client_stub implements the PDFGenerator interface.
 var _ PDFGenerator = (*pDFGenerator_client_stub)(nil)
 
-func (s pDFGenerator_client_stub) GeneratePDF(ctx context.Context, a0 []byte) (r0 []byte, err error) {
+func (s pDFGenerator_client_stub) GeneratePDF(ctx context.Context, a0 []byte, a1 []byte) (r0 []byte, err error) {
 	// Update metrics.
 	var requestBytes, replyBytes int
 	begin := s.generatePDFMetrics.Begin()
@@ -577,11 +655,13 @@ func (s pDFGenerator_client_stub) GeneratePDF(ctx context.Context, a0 []byte) (r
 	// Preallocate a buffer of the right size.
 	size := 0
 	size += (4 + (len(a0) * 1))
+	size += (4 + (len(a1) * 1))
 	enc := codegen.NewEncoder()
 	enc.Reset(size)
 
 	// Encode arguments.
 	serviceweaver_enc_slice_byte_87461245(enc, a0)
+	serviceweaver_enc_slice_byte_87461245(enc, a1)
 	var shardKey uint64
 
 	// Call the remote method.
@@ -680,6 +760,8 @@ func (s aDocRepository_server_stub) GetStubFn(method string) func(ctx context.Co
 	switch method {
 	case "GetFiles":
 		return s.getFiles
+	case "ReadExampleJSON":
+		return s.readExampleJSON
 	case "ReadFile":
 		return s.readFile
 	case "SaveVariantForFile":
@@ -705,6 +787,31 @@ func (s aDocRepository_server_stub) getFiles(ctx context.Context, args []byte) (
 	// Encode the results.
 	enc := codegen.NewEncoder()
 	serviceweaver_enc_slice_string_4af10117(enc, r0)
+	enc.Error(appErr)
+	return enc.Data(), nil
+}
+
+func (s aDocRepository_server_stub) readExampleJSON(ctx context.Context, args []byte) (res []byte, err error) {
+	// Catch and return any panics detected during encoding/decoding/rpc.
+	defer func() {
+		if err == nil {
+			err = codegen.CatchPanics(recover())
+		}
+	}()
+
+	// Decode arguments.
+	dec := codegen.NewDecoder(args)
+	var a0 string
+	a0 = dec.String()
+
+	// TODO(rgrandl): The deferred function above will recover from panics in the
+	// user code: fix this.
+	// Call the local method.
+	r0, appErr := s.impl.ReadExampleJSON(ctx, a0)
+
+	// Encode the results.
+	enc := codegen.NewEncoder()
+	serviceweaver_enc_slice_byte_87461245(enc, r0)
 	enc.Error(appErr)
 	return enc.Data(), nil
 }
@@ -851,11 +958,13 @@ func (s pDFGenerator_server_stub) generatePDF(ctx context.Context, args []byte) 
 	dec := codegen.NewDecoder(args)
 	var a0 []byte
 	a0 = serviceweaver_dec_slice_byte_87461245(dec)
+	var a1 []byte
+	a1 = serviceweaver_dec_slice_byte_87461245(dec)
 
 	// TODO(rgrandl): The deferred function above will recover from panics in the
 	// user code: fix this.
 	// Call the local method.
-	r0, appErr := s.impl.GeneratePDF(ctx, a0)
+	r0, appErr := s.impl.GeneratePDF(ctx, a0, a1)
 
 	// Encode the results.
 	enc := codegen.NewEncoder()

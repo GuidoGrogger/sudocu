@@ -1,0 +1,31 @@
+{
+    "author": "Your Company",
+    "email": "contact@yourcompany.com",
+    "date": "29. Juni 2023",
+    "invoice_number": "INV-00345",
+    "vat_number": "DE123456789",
+    "products": [
+      {
+        "position": "1",
+        "description": "Produkt A",
+        "amount": "100,00 EUR"
+      },
+      {
+        "position": "2",
+        "description": "Housekeeping",
+        "amount": "50,00 EUR"
+      },
+      {
+        "position": "3",
+        "description": "Produkt C",
+        "amount": "75,00 EUR"
+      }
+    ],
+    "total": "250,00 EUR",
+    "bank_info": {
+      "bankname": "Ihre Bank",
+      "kontonummer": "1234567890",
+      "iban": "DE12 3456 7890 1234 5678 90",
+      "bic": "ABCDDEFFXXX"
+    }
+}

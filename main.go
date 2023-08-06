@@ -47,7 +47,15 @@ func serve(ctx context.Context, a *app) error {
 			logger.Warn(err.Error())
 			return
 		}
-		pdfContentBytes, err := a.pdfGenerator.Get().GeneratePDF(ctx, content)
+
+		exampleJson, err := a.aDocRepository.Get().ReadExampleJSON(ctx, fileName)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusNotFound)
+			logger.Warn(err.Error())
+			return
+		}
+
+		pdfContentBytes, err := a.pdfGenerator.Get().GeneratePDF(ctx, content, exampleJson)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			logger.Warn(err.Error())
